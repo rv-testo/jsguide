@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Cheat Sheet & Tutorial</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Настройка шрифтов и цветов Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vue: {
+                            light: '#42b883',
+                            dark: '#35495e',
+                            bg: '#f5f7f9'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Стили для скроллбара */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-vue-bg text-slate-800 font-sans antialiased h-screen flex overflow-hidden">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="w-64 bg-vue-dark text-white flex-shrink-0 flex flex-col overflow-y-auto">
+        <div class="p-6 border-b border-slate-600">
+            <h1 class="text-2xl font-bold text-vue-light">Vue 3 <span class="text-white text-sm font-normal">Cheatsheet</span></h1>
+        </div>
+        <nav class="flex-1 p-4 space-y-1">
+            <a href="#installation" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link">📦 Installation</a>
+            <a href="#configuration" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link">⚙️ Configuration</a>
+            <a href="#markdown" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link pl-8 text-sm opacity-80">└ Markdown</a>
+            <a href="#css-config" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link">🎨 CSS Configuration</a>
+            <a href="#emitted-values" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link">📤 Emitted Values</a>
+            <a href="#errors" class="block px-4 py-2 rounded hover:bg-slate-700 transition nav-link">🐞 Errors Management</a>
+        </nav>
+        <div class="p-4 text-xs text-slate-400 border-t border-slate-600">
+            Made with HTML, JS & Tailwind
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto p-8 scroll-smooth" id="main-scroll">
+        <div class="max-w-4xl mx-auto space-y-12 pb-20">
+
+            <!-- HEADER -->
+            <header class="mb-10">
+                <h2 class="text-3xl font-bold text-vue-dark mb-2">Шпаргалка по Vue 3</h2>
+                <p class="text-slate-600">Быстрый справочник по основным концепциям Vue 3 (Composition API).</p>
+            </header>
+
+            <!-- 1. INSTALLATION -->
+            <section id="installation" class="section-block">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-vue-light text-white p-2 rounded-lg">📦</span>
+                    <h3 class="text-2xl font-bold text-slate-800">Installation</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <p class="mb-4">Самый быстрый способ создать проект на Vue 3 с использованием Vite:</p>
+                    
+                    <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-sm">
+                        <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+                        <pre><code># NPM
+npm create vue@latest
+
+# Yarn
+yarn create vue
+
+# PNPM
+pnpm create vue</code></pre>
+                    </div>
+                    
+                    <p class="mt-4 text-sm text-slate-500">
+                        Или подключение через CDN (для прототипирования):
+                    </p>
+                    <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-sm mt-2">
+                        <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+                        <pre><code>&lt;script src="https://unpkg.com/vue@3/dist/vue.global.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CONFIGURATION -->
+            <section id="configuration" class="section-block">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-vue-light text-white p-2 rounded-lg">⚙️</span>
+                    <h3 class="text-2xl font-bold text-slate-800">Configuration</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Basic Config -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-lg mb-3 text-vue-dark">Global Config (main.js)</h4>
+                        <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs h-48 overflow-auto">
+                            <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>import { createApp } from 'vue'
+import App from './App.vue'
+
+const app = createApp(App)
+
+// Глобальные свойства
+app.config.globalProperties.$api = '...'
+
+// Подключение плагинов
+app.use(Router)
+app.use(Pinia)
+
+app.mount('#app')</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Markdown Subsection -->
+                    <div id="markdown" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-lg mb-3 text-vue-dark">Markdown Rendering</h4>
+                        <p class="text-sm text-slate-500 mb-3">Использование библиотеки <code>marked</code> для рендеринга.</p>
+                        <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs h-48 overflow-auto">
+                            <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;template&gt;
+  &lt;div v-html="renderedMarkdown"&gt;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { computed } from 'vue'
+import { marked } from 'marked'
+
+const props = defineProps(['content'])
+
+const renderedMarkdown = computed(() => {
+  return marked.parse(props.content)
+})
+&lt;/script&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. CSS CONFIGURATION -->
+            <section id="css-config" class="section-block">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-vue-light text-white p-2 rounded-lg">🎨</span>
+                    <h3 class="text-2xl font-bold text-slate-800">CSS Configuration</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <p class="mb-4">Vue 3.2+ позволяет использовать реактивные значения прямо в CSS через <code>v-bind</code>.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-500 mb-2">Script Setup</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;script setup&gt;
+import { ref } from 'vue'
+const theme = ref({
+  color: 'red',
+  text: 'hello!'
+})
+&lt;/script&gt;</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-500 mb-2">Style Scoped</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;style scoped&gt;
+.text {
+  /* Привязка к переменной JS */
+  color: v-bind(theme.color);
+}
+h1 {
+  content: v-bind(theme.text);
+}
+&lt;/style&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. EMITTED VALUES -->
+            <section id="emitted-values" class="section-block">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-vue-light text-white p-2 rounded-lg">📤</span>
+                    <h3 class="text-2xl font-bold text-slate-800">Emitted Values</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <p class="mb-4">Коммуникация от дочернего компонента к родителю.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Child -->
+                        <div class="border-r border-slate-100 pr-4">
+                            <h5 class="font-bold text-vue-light mb-2">Child Component</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;script setup&gt;
+const emit = defineEmits(['update', 'close'])
+
+function handleClick() {
+  // Отправка события с данными
+  emit('update', { id: 1, name: 'Vue' })
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="handleClick"&gt;
+    Update Parent
+  &lt;/button&gt;
+&lt;/template&gt;</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Parent -->
+                        <div>
+                            <h5 class="font-bold text-vue-light mb-2">Parent Component</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;template&gt;
+  &lt;ChildComponent 
+    @update="handleUpdate" 
+    @close="isOpen = false" 
+  /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+const handleUpdate = (data) => {
+  console.log('Received:', data)
+}
+&lt;/script&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. ERRORS MANAGEMENT -->
+            <section id="errors" class="section-block">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-vue-light text-white p-2 rounded-lg">🐞</span>
+                    <h3 class="text-2xl font-bold text-slate-800">Errors Management</h3>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <p class="mb-4">Глобальная обработка ошибок и перехват внутри компонентов.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-500 mb-2">Global Handler (main.js)</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>app.config.errorHandler = (err, instance, info) => {
+  // Отправка в сервис мониторинга (Sentry, etc.)
+  console.error('Global Error:', err)
+  console.log('Component:', instance)
+  console.log('Info:', info)
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-500 mb-2">Component Level (errorCaptured)</h5>
+                            <div class="code-block bg-slate-900 rounded-lg p-4 text-slate-50 font-mono text-xs">
+                                <button class="copy-btn bg-slate-700 hover:bg-slate-600 text-xs px-2 py-1 rounded" onclick="copyCode(this)">Copy</button>
+<pre><code>&lt;script setup&gt;
+import { onErrorCaptured } from 'vue'
+
+onErrorCaptured((err, instance, info) => {
+  // Логика обработки ошибки потомка
+  console.log('Captured:', err)
+  
+  // Вернуть false, чтобы ошибка не всплывала выше
+  return false 
+})
+&lt;/script&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Функция копирования кода
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('pre code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                button.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.classList.remove('bg-green-600');
+                }, 2000);
+            });
+        }
+
+        // Плавный скролл для навигации (дополнительно к CSS scroll-smooth)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Скроллим главный контейнер, а не окно
+                    const mainContainer = document.getElementById('main-scroll');
+                    const offset = 20; 
+                    const elementPosition = targetElement.getBoundingClientRect().top + mainContainer.scrollTop;
+                    const offsetPosition = elementPosition - offset;
+
+                    mainContainer.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
